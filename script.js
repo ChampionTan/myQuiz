@@ -1,18 +1,28 @@
-var userChoice = 0;
-var questonCorrect = 0;
-var questionWrong = 0;
-var questionBlank = 0;
-var timer;
-var time = 120;
-var questions = [
-{
-	question: "Who was the first pokemon created?",
-	answers: {
-		a: "Bulbasaur",
-		b: "Rhydon",
-		c: "Mew",
-		d: "Pikachu",
-	},
-	
-}
-]
+var questions = document.querySelectorAll(".question");
+var cursor = 0;
+
+var displayQuestion = function () {
+	for (var question of questions) {
+		console.log(question);
+		if (question.dataset.index != cursor) {
+			question.style.display = "none";
+		}
+
+	}
+};
+
+var advance = function(event) {
+	var element = event.target;
+
+	if (element.matches('question')) {
+		if (cursor < questions.length - 1) {
+			cursor++;
+		}
+		displayQuestion();
+	}
+};
+
+document.addEventListener('click', advance);
+
+displayQuestion();
+
