@@ -7,6 +7,9 @@ var displayQuestion = function () {
 		if (question.dataset.index != cursor) {
 			question.style.display = "none";
 		}
+		else{
+			question.style.display = "block";
+		}
 
 	}
 };
@@ -14,7 +17,7 @@ var displayQuestion = function () {
 var advance = function(event) {
 	var element = event.target;
 
-	if (element.matches('question')) {
+	if (element.matches('.question button')) {
 		if (cursor < questions.length - 1) {
 			cursor++;
 		}
