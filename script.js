@@ -2,8 +2,11 @@ var questions = document.querySelectorAll(".question");
 var gameOver = document.querySelector(".gameover");
 var timer = document.querySelector(".timer");
 var start = document.querySelector(".start");
+var score = document.querySelector(".score");
 var cursor = 0;
 var secondsLeft = 60;
+var numberOfCorrect = 0;
+var initials = "";
 
 function displayTimer() {
 	//display a timer with 60 secs
@@ -48,9 +51,30 @@ var displayGameOver = function () {
 	}
 	else {
 		gameOver.style.display = "block";
+		var initials = prompt("Enter Initials");
+		saveHiScore(initials);
+		displayStoredPlayer();
 	}
 
 }
+
+var saveHiScore = function (initials) {
+	var playerScore = {
+		playerInitials: initials,
+		score: numberOfCorrect,
+
+	};
+	localStorage.setItem("score", JSON.stringify(playerScore));
+}
+
+var displayStoredPlayer = function() {
+	var storedPlayer = localStorage.getItem("score");
+	var playerObject = JSON.parse(storedPlayer);
+	score.textContent = "Player = " + playerObject.playerInitials + " | Score = " + playerObject.score;
+
+}
+
+
 var test;
 var startTimer = function () {
 	test = setInterval(decrementTime, 1000);
@@ -61,6 +85,12 @@ var decrementTime = function () {
 	secondsLeft--;
 	if (secondsLeft === 0) {
 		clearInterval(test);
+		cursor = 6;
+		displayNextQuestion();
+		if(gameOver.style.display != "block") {
+			displayGameOver();
+
+		}
 	}
 	displayTimer();
 }
@@ -93,11 +123,13 @@ var checkAnswer = function (element) {
 	//compare them
 	if (selectedAnswer != correctAnswer) {
 		//if wrong apply a time penalty
-		
 		secondsLeft = secondsLeft - 5;
+	}else{
+		numberOfCorrect++;
 	}
-	//if correct do nothing
+	//if correct do increment number of correct
 }
+
 
 document.addEventListener('click', advance);
 
